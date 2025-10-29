@@ -1,16 +1,22 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const mongoose = require("mongoose");
+const userRoutes = require('./routes/user');
 
-const app = express(); // phải khởi tạo trước khi dùng app.use
+const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+// Connect MongoDB
+mongoose.connect(process.env.MONGO_URI) // lấy từ .env
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log(err));
+
 // Routes
-const userRoutes = require('./routes/user'); // router chỉ export router
-app.use('/api', userRoutes); // tất cả route trong user.js sẽ có prefix /api
+app.use('/api', userRoutes);
 
 // Health check
 app.get('/', (req, res) => res.send('API is running'));
