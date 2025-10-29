@@ -1,18 +1,20 @@
-// Import các thư viện
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
+const cors = require('cors');
 
-// Khởi tạo ứng dụng
-const app = express();
+const app = express(); // phải khởi tạo trước khi dùng app.use
 
-// Middleware cho phép nhận dữ liệu JSON
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Cấu hình cổng chạy server
-const PORT = process.env.PORT || 3000;
+// Routes
+const userRoutes = require('./routes/user'); // router chỉ export router
+app.use('/api', userRoutes); // tất cả route trong user.js sẽ có prefix /api
 
-// Khởi động server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+// Health check
+app.get('/', (req, res) => res.send('API is running'));
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
