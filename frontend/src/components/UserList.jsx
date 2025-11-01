@@ -16,7 +16,8 @@ export default function UserList() {
     setErrorFetch(null);
     try {
       const res = await axios.get('http://localhost:3000/api/users');
-      setUsers(res.data);
+      // Handle both old format (array) and new format (object with users array)
+      setUsers(res.data.users || res.data || []);
     } catch (err) {
       setErrorFetch(err?.response?.data?.message || err.message || 'Fetch failed');
     } finally {

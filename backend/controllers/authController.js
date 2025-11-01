@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 
 // Tạo JWT Token
 const generateToken = (userId) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined in environment variables");
+  }
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE || "7d",
   });
@@ -59,9 +62,11 @@ exports.signup = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Signup error:", error);
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message || "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
@@ -116,9 +121,11 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message || "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };

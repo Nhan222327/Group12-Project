@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
+const profileRoutes = require("./routes/profile");
 
 const app = express();
 
@@ -18,18 +20,12 @@ mongoose
 
 // Routes
 app.use("/api", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api", profileRoutes);
 
 // Health check
 app.get("/", (req, res) => res.send("API is running"));
 
 // Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-// ... existing code ...
-const authRoutes = require("./routes/auth");
-
-// Routes
-app.use("/api", userRoutes);
-app.use("/api/auth", authRoutes); // Thêm dòng này
-
-// ... rest of code ...
+app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
