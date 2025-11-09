@@ -16,13 +16,13 @@ export default function SignUp() {
 
     const validate = () => {
         const newErrors = {};
-        if (!formData.name.trim()) newErrors.name = 'Name is required';
-        if (!formData.email.trim()) newErrors.email = 'Email is required';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
-        if (!formData.password) newErrors.password = 'Password is required';
-        else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+        if (!formData.name.trim()) newErrors.name = 'Tên không được để trống';
+        if (!formData.email.trim()) newErrors.email = 'Email không được để trống';
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email không hợp lệ';
+        if (!formData.password) newErrors.password = 'Mật khẩu không được để trống';
+        else if (formData.password.length < 6) newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
         if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match';
+            newErrors.confirmPassword = 'Mật khẩu xác nhận không khớp';
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -45,64 +45,78 @@ export default function SignUp() {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-            <h2>Sign Up</h2>
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                    />
-                    {errors.name && <div style={{ color: 'red', fontSize: '14px' }}>{errors.name}</div>}
-                </div>
+        <div style={{ 
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f5f5f5',
+            padding: '20px'
+        }}>
+            <div className="card" style={{ maxWidth: '400px', width: '100%' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '30px', color: '#333', marginTop: 0 }}>📝 Đăng ký</h2>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label className="label">Tên</label>
+                        <input
+                            type="text"
+                            className="input"
+                            placeholder="Nhập tên của bạn"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        />
+                        {errors.name && <div className="error-message">{errors.name}</div>}
+                    </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                    />
-                    {errors.email && <div style={{ color: 'red', fontSize: '14px' }}>{errors.email}</div>}
-                </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label className="label">Email</label>
+                        <input
+                            type="email"
+                            className="input"
+                            placeholder="Nhập email của bạn"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        />
+                        {errors.email && <div className="error-message">{errors.email}</div>}
+                    </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                    />
-                    {errors.password && <div style={{ color: 'red', fontSize: '14px' }}>{errors.password}</div>}
-                </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label className="label">Mật khẩu</label>
+                        <input
+                            type="password"
+                            className="input"
+                            placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        />
+                        {errors.password && <div className="error-message">{errors.password}</div>}
+                    </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                    <input
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={formData.confirmPassword}
-                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                    />
-                    {errors.confirmPassword && <div style={{ color: 'red', fontSize: '14px' }}>{errors.confirmPassword}</div>}
-                </div>
+                    <div style={{ marginBottom: '20px' }}>
+                        <label className="label">Xác nhận mật khẩu</label>
+                        <input
+                            type="password"
+                            className="input"
+                            placeholder="Nhập lại mật khẩu"
+                            value={formData.confirmPassword}
+                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                        />
+                        {errors.confirmPassword && <div className="error-message">{errors.confirmPassword}</div>}
+                    </div>
 
-                <button 
-                    type="submit" 
-                    disabled={loading}
-                    style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                >
-                    {loading ? 'Signing up...' : 'Sign Up'}
-                </button>
-            </form>
-            <p style={{ marginTop: '15px', textAlign: 'center' }}>
-                Already have an account? <Link to="/login">Login</Link>
-            </p>
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="btn btn-primary"
+                        style={{ width: '100%', padding: '12px', fontSize: '16px' }}
+                    >
+                        {loading ? 'Đang đăng ký...' : '✨ Đăng ký'}
+                    </button>
+                </form>
+                <p style={{ marginTop: '20px', textAlign: 'center', color: '#666' }}>
+                    Đã có tài khoản? <Link to="/login" style={{ color: '#007bff', textDecoration: 'none', fontWeight: '500' }}>Đăng nhập ngay</Link>
+                </p>
+            </div>
         </div>
     );
 }

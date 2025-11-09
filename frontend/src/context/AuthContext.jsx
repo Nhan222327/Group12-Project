@@ -97,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         login,
         logout,
+        fetchProfile,
         isAuthenticated: !!token
     };
 
