@@ -32,7 +32,7 @@ export default function Profile() {
             const updateData = { name: formData.name };
             if (formData.password) updateData.password = formData.password;
 
-            const res = await axios.put('http://localhost:3000/api/users/profile', updateData);
+            await axios.put('http://localhost:3000/api/users/profile', updateData);
             setMessage('Profile updated successfully');
             setFormData({ ...formData, password: '', confirmPassword: '' });
             // Refresh user data
